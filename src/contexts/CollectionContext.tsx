@@ -40,8 +40,7 @@ const CollectionContext = createContext<CollectionContextType | null>(null);
 export function CollectionProvider({ children }: { children: ReactNode }) {
   const [photos, setPhotos] = useState<Photo[]>(MOCK_PHOTOS);
   const [folders, setFolders] = useState<FolderItem[]>([]);
-  const [collections, setCollections] =
-    useState<Collection[]>(MOCK_COLLECTIONS);
+  const [collections] = useState<Collection[]>(MOCK_COLLECTIONS);
 
   function addPhotos(newPhotos: Photo[], folderId?: string) {
     setPhotos((prev) => [
