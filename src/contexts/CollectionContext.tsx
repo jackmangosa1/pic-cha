@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import type { Photo } from "@/types/photo";
 import type { FolderItem } from "@/components/FolderList";
+import { Collection } from "@/types/collection";
 
 const MOCK_PHOTOS: Photo[] = [
   {
@@ -12,15 +13,26 @@ const MOCK_PHOTOS: Photo[] = [
   },
 ];
 
+const MOCK_COLLECTIONS: Collection[] = [
+  {
+    id: "1",
+    name: "Summer Trip",
+    creatorName: "Antoine",
+  },
+];
+
 interface CollectionContextType {
   photos: Photo[];
   folders: FolderItem[];
+  collections: Collection[];
   addPhotos: (newPhotos: Photo[], folderId?: string) => void;
   deletePhoto: (id: string) => void;
   bulkDeletePhotos: (ids: string[]) => void;
   addFolder: (name: string) => string;
   renameFolder: (id: string, name: string) => void;
   deleteFolder: (id: string) => void;
+
+  getCollectionById: (id: string) => Collection | undefined;
 }
 
 const CollectionContext = createContext<CollectionContextType | null>(null);
@@ -28,6 +40,8 @@ const CollectionContext = createContext<CollectionContextType | null>(null);
 export function CollectionProvider({ children }: { children: ReactNode }) {
   const [photos, setPhotos] = useState<Photo[]>(MOCK_PHOTOS);
   const [folders, setFolders] = useState<FolderItem[]>([]);
+  const [collections, setCollections] =
+    useState<Collection[]>(MOCK_COLLECTIONS);
 
   function addPhotos(newPhotos: Photo[], folderId?: string) {
     setPhotos((prev) => [
@@ -61,17 +75,23 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     );
   }
 
+  function getCollectionById(id: string) {
+    return collections.find((c) => c.id === String(id));
+  }
+
   return (
     <CollectionContext.Provider
       value={{
         photos,
         folders,
+        collections,
         addPhotos,
         deletePhoto,
         bulkDeletePhotos,
         addFolder,
         renameFolder,
         deleteFolder,
+        getCollectionById,
       }}
     >
       {children}

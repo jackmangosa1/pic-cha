@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as BillingRouteImport } from './routes/billing'
 import { Route as IndexRouteImport } from './routes/index'
@@ -16,6 +17,11 @@ import { Route as CollectionsIdRouteImport } from './routes/collections.$id'
 import { Route as CollectionsIdIndexRouteImport } from './routes/collections.$id.index'
 import { Route as CollectionsIdFoldersFolderIdRouteImport } from './routes/collections.$id.folders.$folderId'
 
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
   '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
   '/collections/$id': typeof CollectionsIdRouteWithChildren
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/collections/$id/folders/$folderId': typeof CollectionsIdFoldersFolderIdRoute
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
   '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
   '/collections/$id': typeof CollectionsIdIndexRoute
   '/collections/$id/folders/$folderId': typeof CollectionsIdFoldersFolderIdRoute
 }
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
   '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
   '/collections/$id': typeof CollectionsIdRouteWithChildren
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/collections/$id/folders/$folderId': typeof CollectionsIdFoldersFolderIdRoute
@@ -78,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/billing'
     | '/profile'
+    | '/search'
     | '/collections/$id'
     | '/collections/$id/'
     | '/collections/$id/folders/$folderId'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/billing'
     | '/profile'
+    | '/search'
     | '/collections/$id'
     | '/collections/$id/folders/$folderId'
   id:
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '/'
     | '/billing'
     | '/profile'
+    | '/search'
     | '/collections/$id'
     | '/collections/$id/'
     | '/collections/$id/folders/$folderId'
@@ -102,11 +114,19 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BillingRoute: typeof BillingRoute
   ProfileRoute: typeof ProfileRoute
+  SearchRoute: typeof SearchRoute
   CollectionsIdRoute: typeof CollectionsIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -170,6 +190,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BillingRoute: BillingRoute,
   ProfileRoute: ProfileRoute,
+  SearchRoute: SearchRoute,
   CollectionsIdRoute: CollectionsIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
