@@ -6,6 +6,7 @@ export interface Collection {
   name: string;
   photoCount: number;
   createdAt: string;
+  creatorName: string;
 }
 
 interface Props {

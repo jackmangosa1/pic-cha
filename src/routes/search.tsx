@@ -1,4 +1,4 @@
-import SearchPage from "@/pages/SearchPage";
+import SearchPhotoPage from "@/pages/SearchPhotoPage";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/search")({
@@ -7,5 +7,5 @@ export const Route = createFileRoute("/search")({
       collectionId: search.collectionId ?? "",
     };
   },
-  component: SearchPage,
+  component: SearchPhotoPage,
 });

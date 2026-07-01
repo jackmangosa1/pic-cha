@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import type { Photo } from "@/types/photo";
 import type { FolderItem } from "@/components/FolderList";
-import { Collection } from "@/types/collection";
+import { Collection } from "@/components/CollectionCard";
 
 const MOCK_PHOTOS: Photo[] = [
   {
@@ -16,7 +16,9 @@ const MOCK_PHOTOS: Photo[] = [
 const MOCK_COLLECTIONS: Collection[] = [
   {
     id: "1",
-    name: "Summer Trip",
+    name: "Summer trip",
+    photoCount: 3,
+    createdAt: "07-01-2026",
     creatorName: "Antoine",
   },
 ];

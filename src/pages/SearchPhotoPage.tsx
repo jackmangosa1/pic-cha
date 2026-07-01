@@ -1,37 +1,37 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Toaster } from "@/components/ui/sonner";
 import { useCollectionContext } from "@/contexts/CollectionContext";
 import { Route } from "@/routes/search";
+import { LucideIcon, Shield, ShieldOff, Upload } from "lucide-react";
 import { useRef, useState } from "react";
-import { FiShieldOff } from "react-icons/fi";
-import { MdOutlineFileUpload, MdOutlineShield } from "react-icons/md";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "sonner";
 
 type ActionType = "camera" | "upload";
 
 const actionsCards: {
   id: number;
-  icon: any;
+  icon: LucideIcon;
   title: string;
   subtitle: string;
   action: ActionType;
 }[] = [
   {
     id: 1,
-    icon: FiShieldOff,
+    icon: ShieldOff,
     title: "Camera",
     subtitle: "Take a selfie",
     action: "camera",
   },
   {
     id: 2,
-    icon: MdOutlineFileUpload,
+    icon: Upload,
     title: "Upload Selfie",
     subtitle: "From your device",
     action: "upload",
   },
 ];
 
-function SearchPage() {
+function SearchPhotoPage() {
   const { collectionId } = Route.useSearch();
   const { getCollectionById } = useCollectionContext();
   const collection = getCollectionById(collectionId);
@@ -49,7 +49,7 @@ function SearchPage() {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: "user", // front camera
+          facingMode: "user",
         },
       });
 
@@ -102,17 +102,25 @@ function SearchPage() {
     }
   }
 
+  if (!collection) {
+    return (
+      <div className="flex min-h-full items-center justify-center">
+        <p className="text-muted-foreground">Collection not found</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <section className="flex min-h-full flex-col items-center justify-center px-4 py-5">
         <div className="grid grid-cols-1 py-3 text-center">
           <div className="text-3xl font-bold tracking-tight text-foreground">
-            {collection?.name ?? "Unknown"}
+            {collection.name}
           </div>
           <h1>
             by{" "}
             <strong className="font-medium text-foreground">
-              {collection?.creatorName ?? "Unknown"}
+              {collection.creatorName}
             </strong>
           </h1>
         </div>
@@ -141,19 +149,16 @@ function SearchPage() {
                         className=" flex min-h-52 flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-secondary"
                       >
                         <CardContent className="flex flex-1 flex-col items-center p-6">
-                          {/* Icon */}
                           <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-muted-foreground">
                             <Icon className="h-6 w-6 text-primary" />
                           </div>
 
-                          {/* Fixed-height title */}
                           <div className="flex h-2 items-center justify-center">
                             <h2 className="text-center text-lg font-semibold">
                               {item.title}
                             </h2>
                           </div>
 
-                          {/* Fixed-height subtitle */}
                           <div className="mt-2 flex h-4 items-start justify-center">
                             <p className="text-center text-sm text-muted-foreground">
                               {item.subtitle}
@@ -166,7 +171,7 @@ function SearchPage() {
                 </div>
                 <div className="flex items-center justify-center gap-3">
                   <div className="h-5 w-5 flex items-center justify-center rounded-full bg-muted-foreground">
-                    <MdOutlineShield size={15} className="text-white " />
+                    <Shield size={15} className="text-white " />
                   </div>
                   <h1 className="text-muted-foreground">
                     Your photo is only used for matching.
@@ -209,6 +214,8 @@ function SearchPage() {
         </div>
       )}
 
+      <Toaster />
+
       <input
         ref={cameraInputRef}
         type="file"
@@ -223,9 +230,8 @@ function SearchPage() {
         accept="image/*"
         className="hidden"
       />
-      <ToastContainer />
     </>
   );
 }
 
-export default SearchPage;
+export default SearchPhotoPage;
