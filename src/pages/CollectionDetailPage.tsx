@@ -4,13 +4,14 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Route } from "@/routes/collections.$id.index";
 import { ShareDialog } from "@/components/ShareDialog";
-import { FolderList } from "@/components/FolderList";
+import { FolderList, type FolderItem } from "@/components/FolderList";
 import { PhotoGalleryControls } from "@/components/PhotoGalleryControls";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { CollectionSettings } from "@/components/CollectionSettings";
-import { useCollectionContext } from "@/contexts/CollectionContext";
 import { usePhotoGalleryState } from "@/hooks/usePhotoGalleryState";
+import { MOCK_PHOTOS } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
+import type { Photo } from "@/types/photo";
 
 const GUEST_SEARCHES = { current: 1, max: 10 };
 
@@ -23,16 +24,37 @@ export function CollectionDetailPage() {
   const [shareOpen, setShareOpen] = useState(false);
   const [folderDialogOpen, setFolderDialogOpen] = useState(false);
 
-  const {
-    photos,
-    folders,
-    addPhotos,
-    deletePhoto,
-    bulkDeletePhotos,
-    addFolder,
-    renameFolder,
-    deleteFolder,
-  } = useCollectionContext();
+  const [photos, setPhotos] = useState<Photo[]>(MOCK_PHOTOS);
+  const [folders, setFolders] = useState<FolderItem[]>([]);
+
+  function addPhotos(newPhotos: Photo[]) {
+    setPhotos((prev) => [...newPhotos, ...prev]);
+  }
+
+  function deletePhoto(id: string) {
+    setPhotos((prev) => prev.filter((p) => p.id !== id));
+  }
+
+  function bulkDeletePhotos(ids: string[]) {
+    setPhotos((prev) => prev.filter((p) => !ids.includes(p.id)));
+  }
+
+  function addFolder(name: string): string {
+    const id = crypto.randomUUID();
+    setFolders((prev) => [...prev, { id, name }]);
+    return id;
+  }
+
+  function renameFolder(id: string, name: string) {
+    setFolders((prev) => prev.map((f) => (f.id === id ? { ...f, name } : f)));
+  }
+
+  function deleteFolder(id: string) {
+    setFolders((prev) => prev.filter((f) => f.id !== id));
+    setPhotos((prev) =>
+      prev.map((p) => (p.folderId === id ? { ...p, folderId: undefined } : p)),
+    );
+  }
 
   const rootPhotos = photos.filter((p) => !p.folderId);
   const { controls, gallery } = usePhotoGalleryState(rootPhotos);

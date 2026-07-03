@@ -1,16 +1,35 @@
+import { useState } from "react";
 import { ArrowLeft, Folder, Home, ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { PhotoGalleryControls } from "@/components/PhotoGalleryControls";
 import { PhotoGallery } from "@/components/PhotoGallery";
-import { useCollectionContext } from "@/contexts/CollectionContext";
 import { usePhotoGalleryState } from "@/hooks/usePhotoGalleryState";
+import { MOCK_PHOTOS } from "@/lib/mock-data";
 import { Route } from "@/routes/collections.$id.folders.$folderId";
+import type { Photo } from "@/types/photo";
 
 export function FolderDetailPage() {
   const { id, folderId } = Route.useParams();
   const { folderName, collectionName, createdAt } = Route.useSearch();
-  const { photos, addPhotos, deletePhoto, bulkDeletePhotos } =
-    useCollectionContext();
+
+  const [photos, setPhotos] = useState<Photo[]>(MOCK_PHOTOS);
+
+  function addPhotos(newPhotos: Photo[], targetFolderId?: string) {
+    setPhotos((prev) => [
+      ...newPhotos.map((p) =>
+        targetFolderId ? { ...p, folderId: targetFolderId } : p,
+      ),
+      ...prev,
+    ]);
+  }
+
+  function deletePhoto(id: string) {
+    setPhotos((prev) => prev.filter((p) => p.id !== id));
+  }
+
+  function bulkDeletePhotos(ids: string[]) {
+    setPhotos((prev) => prev.filter((p) => !ids.includes(p.id)));
+  }
 
   const folderPhotos = photos.filter((p) => p.folderId === folderId);
   const { controls, gallery } = usePhotoGalleryState(folderPhotos);
