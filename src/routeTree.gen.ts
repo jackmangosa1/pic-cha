@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as BillingRouteImport } from './routes/billing'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CollectionsIdRouteImport } from './routes/collections.$id'
@@ -25,6 +26,11 @@ const SearchRoute = SearchRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BillingRoute = BillingRouteImport.update({
@@ -57,6 +63,7 @@ const CollectionsIdFoldersFolderIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/search': typeof SearchRoute
   '/collections/$id': typeof CollectionsIdRouteWithChildren
@@ -66,6 +73,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/search': typeof SearchRoute
   '/collections/$id': typeof CollectionsIdIndexRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/search': typeof SearchRoute
   '/collections/$id': typeof CollectionsIdRouteWithChildren
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/billing'
+    | '/login'
     | '/profile'
     | '/search'
     | '/collections/$id'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/billing'
+    | '/login'
     | '/profile'
     | '/search'
     | '/collections/$id'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/billing'
+    | '/login'
     | '/profile'
     | '/search'
     | '/collections/$id'
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BillingRoute: typeof BillingRoute
+  LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   SearchRoute: typeof SearchRoute
   CollectionsIdRoute: typeof CollectionsIdRouteWithChildren
@@ -132,6 +145,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/billing': {
@@ -189,6 +209,7 @@ const CollectionsIdRouteWithChildren = CollectionsIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BillingRoute: BillingRoute,
+  LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   SearchRoute: SearchRoute,
   CollectionsIdRoute: CollectionsIdRouteWithChildren,
