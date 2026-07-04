@@ -9,22 +9,40 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as ResetPasswordRouteImport } from './routes/resetPassword'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as BillingRouteImport } from './routes/billing'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CollectionsIdRouteImport } from './routes/collections.$id'
 import { Route as CollectionsIdIndexRouteImport } from './routes/collections.$id.index'
 import { Route as CollectionsIdFoldersFolderIdRouteImport } from './routes/collections.$id.folders.$folderId'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/resetPassword',
+  path: '/resetPassword',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BillingRoute = BillingRouteImport.update({
@@ -57,8 +75,11 @@ const CollectionsIdFoldersFolderIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/resetPassword': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/collections/$id': typeof CollectionsIdRouteWithChildren
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/collections/$id/folders/$folderId': typeof CollectionsIdFoldersFolderIdRoute
@@ -66,8 +87,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/resetPassword': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/collections/$id': typeof CollectionsIdIndexRoute
   '/collections/$id/folders/$folderId': typeof CollectionsIdFoldersFolderIdRoute
 }
@@ -75,8 +99,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/billing': typeof BillingRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/resetPassword': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/collections/$id': typeof CollectionsIdRouteWithChildren
   '/collections/$id/': typeof CollectionsIdIndexRoute
   '/collections/$id/folders/$folderId': typeof CollectionsIdFoldersFolderIdRoute
@@ -86,8 +113,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/billing'
+    | '/login'
     | '/profile'
+    | '/resetPassword'
     | '/search'
+    | '/signup'
     | '/collections/$id'
     | '/collections/$id/'
     | '/collections/$id/folders/$folderId'
@@ -95,16 +125,22 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/billing'
+    | '/login'
     | '/profile'
+    | '/resetPassword'
     | '/search'
+    | '/signup'
     | '/collections/$id'
     | '/collections/$id/folders/$folderId'
   id:
     | '__root__'
     | '/'
     | '/billing'
+    | '/login'
     | '/profile'
+    | '/resetPassword'
     | '/search'
+    | '/signup'
     | '/collections/$id'
     | '/collections/$id/'
     | '/collections/$id/folders/$folderId'
@@ -113,13 +149,23 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BillingRoute: typeof BillingRoute
+  LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SearchRoute: typeof SearchRoute
+  SignupRoute: typeof SignupRoute
   CollectionsIdRoute: typeof CollectionsIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
@@ -127,11 +173,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resetPassword': {
+      id: '/resetPassword'
+      path: '/resetPassword'
+      fullPath: '/resetPassword'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/billing': {
@@ -189,8 +249,11 @@ const CollectionsIdRouteWithChildren = CollectionsIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BillingRoute: BillingRoute,
+  LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SearchRoute: SearchRoute,
+  SignupRoute: SignupRoute,
   CollectionsIdRoute: CollectionsIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
