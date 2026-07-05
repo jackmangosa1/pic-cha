@@ -92,12 +92,19 @@ export function CollectionDetailPage() {
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-sm">
             <div className="flex items-center gap-3">
-              <span className="font-medium text-foreground">
-                Guest Searches
-                <span className="font-normal text-muted-foreground">
-                  ({GUEST_SEARCHES.current}/{GUEST_SEARCHES.max})
+              <Link
+                to="/search"
+                search={{
+                  collectionId: id,
+                }}
+              >
+                <span className="inline-block font-medium text-foreground transition-all duration-200 ease-out hover:scale-105 hover:text-primary">
+                  Guest Searches
+                  <span className="font-normal text-muted-foreground">
+                    ({GUEST_SEARCHES.current}/{GUEST_SEARCHES.max})
+                  </span>
                 </span>
-              </span>
+              </Link>
               <div className="h-1.5 w-24 overflow-hidden rounded-full bg-secondary">
                 <div
                   className="h-full rounded-full bg-primary transition-all"

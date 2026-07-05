@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button";
 import { CollectionCard, type Collection } from "@/components/CollectionCard";
 import { CreateItemDialog } from "@/components/CreateItemDialog";
 
-
 const INITIAL_COLLECTIONS: Collection[] = [
   {
     id: "1",
     name: "Test",
     photoCount: 1,
     createdAt: "2026-06-11",
+    creatorName: "Jack",
   },
 ];
 
@@ -24,7 +24,13 @@ export function CollectionListPage() {
     const formatted = dayjs().format("YYYY-MM-DD");
     setCollections((prev) => [
       ...prev,
-      { id: crypto.randomUUID(), name, photoCount: 0, createdAt: formatted },
+      {
+        id: crypto.randomUUID(),
+        name,
+        photoCount: 0,
+        createdAt: formatted,
+        creatorName: "Jack",
+      },
     ]);
   }
 
